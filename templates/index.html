@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No-Stress Subliminal Creator</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- ===== ANIMATED BACKGROUND ===== -->
+    <div class="bg-gradient"></div>
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="logo-section">
+                <div>
+                    <h1 class="app-title">No-Stress Subliminal Creator</h1>
+                    <p class="app-subtitle">Made with love by vbizz (Audio Techniques) and DeepSeek-V4-Pro (Coding)</p>
+                </div>
+            </div>
+            <div class="header-status" id="connectionStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN LAYOUT ===== -->
+    <div class="app-container">
+
+        <!-- ===== SCROLLABLE CONTENT ===== -->
+        <main class="main-content" id="mainContent">
+            <div class="content-scroll">
+
+                <!-- Affirmation Inputs -->
+                <section class="card glass-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                            Affirmation Scripts
+                        </h2>
+                        <p class="card-desc">Enter one affirmation per line. Each track is routed to the optimal brain hemisphere.</p>
+                    </div>
+
+                    <div class="text-areas-grid">
+                        <div class="text-area-group" data-track="left">
+                            <div class="ta-header">
+                                <span class="ta-badge badge-left">LEFT EAR</span>
+                                <span class="ta-hemi">Right Hemisphere</span>
+                            </div>
+                            <p class="ta-hint">First-person "I AM" statements</p>
+                            <textarea id="leftText" class="affirmation-input" placeholder="I am completely safe and secure.
+I am magnetic to abundance.
+I am deeply calm and capable." rows="6"></textarea>
+                            <div class="ta-footer">
+                                <span class="char-count" id="leftCharCount">0 chars</span>
+                                <select id="leftVoiceSelect" class="track-voice-select" title="Voice for left ear track">
+                                    <option value="">Same as default</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-area-group" data-track="right">
+                            <div class="ta-header">
+                                <span class="ta-badge badge-right">RIGHT EAR</span>
+                                <span class="ta-hemi">Left Hemisphere</span>
+                            </div>
+                            <p class="ta-hint">Second-person "YOU ARE" statements</p>
+                            <textarea id="rightText" class="affirmation-input" placeholder="You are physically powerful and magnetic.
+You are succeeding beyond measure.
+You are worthy of everything you desire." rows="6"></textarea>
+                            <div class="ta-footer">
+                                <span class="char-count" id="rightCharCount">0 chars</span>
+                                <select id="rightVoiceSelect" class="track-voice-select" title="Voice for right ear track">
+                                    <option value="">Same as default</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="text-area-group" data-track="center">
+                            <div class="ta-header">
+                                <span class="ta-badge badge-center">CENTER</span>
+                                <span class="ta-hemi">Both Hemispheres</span>
+                            </div>
+                            <p class="ta-hint">Progressive phrasing &amp; Afformations</p>
+                            <textarea id="centerText" class="affirmation-input" placeholder="Why does everything work out in my favor?
+I allow myself to feel completely at ease.
+I am open to receiving unexpected blessings." rows="6"></textarea>
+                            <div class="ta-footer">
+                                <span class="char-count" id="centerCharCount">0 chars</span>
+                                <select id="centerVoiceSelect" class="track-voice-select" title="Voice for center/bridge track">
+                                    <option value="">Same as default</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings -->
+                <section class="card glass-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                            Settings
+                        </h2>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="setting-group">
+                            <label class="setting-label">Subliminal Method</label>
+                            <div class="checkbox-row">
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="methodMasked" checked>
+                                    <span class="checkmark"></span>
+                                    <span class="check-label">Classic Masked</span>
+                                </label>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="methodSilent">
+                                    <span class="checkmark"></span>
+                                    <span class="check-label">Silent Ultrasonic</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="modern-checkbox standalone">
+                                <input type="checkbox" id="binauralToggle" checked>
+                                <span class="checkmark"></span>
+                                <span class="check-label">Include 6 Hz Theta Binaural Beats</span>
+                            </label>
+                        </div>
+
+                        <div class="setting-group">
+                            <div class="slider-header">
+                                <label class="setting-label">Tempo Compression</label>
+                                <span class="slider-value" id="speedValue">1.35x</span>
+                            </div>
+                            <input type="range" id="speedSlider" class="modern-slider" min="1.0" max="2.0" step="0.05" value="1.35">
+                            <div class="slider-ticks">
+                                <span>1.0x natural</span>
+                                <span>1.35x recommended</span>
+                                <span>2.0x max</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <div class="slider-header">
+                                <label class="setting-label">Vocal Volume (Masked)</label>
+                                <span class="slider-value" id="volumeValue">-28 dB</span>
+                            </div>
+                            <input type="range" id="volumeSlider" class="modern-slider" min="-40" max="-10" step="1" value="-28">
+                            <div class="slider-ticks">
+                                <span>-40 dB faintest</span>
+                                <span>-28 dB recommended</span>
+                                <span>-10 dB loudest</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label">TTS Voice</label>
+                            <select id="voiceSelect" class="modern-select">
+                                <option value="">Loading voices...</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Energy Layers (Morphic / Frequency Fields) -->
+                <section class="card glass-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 7 3M12 2v20M2 12h20"/></svg>
+                            Energy Layers
+                        </h2>
+                        <p class="card-desc">Layer additional frequency constructs into your audio. Only one brainwave entrainment method at a time — Solfeggio and Schumann can always be layered on top.</p>
+                    </div>
+
+                    <!-- Enable/Disable toggle -->
+                    <label class="modern-checkbox standalone" style="margin-bottom:12px;">
+                        <input type="checkbox" id="energyToggle">
+                        <span class="checkmark"></span>
+                        <span class="check-label">Enable Energy Layers</span>
+                    </label>
+
+                    <div class="energy-panel" id="energyPanel" style="display:none;">
+                        <!-- Energy Presets (one-click configurations) -->
+                        <div class="energy-section">
+                            <label class="setting-label">Energy Presets</label>
+                            <p class="energy-hint">One-click configurations that auto-fill all energy layer settings.</p>
+                            <div class="energy-presets-grid" id="energyPresetsGrid">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Brainwave Entrainment -->
+                        <div class="energy-section">
+                            <label class="setting-label">Brainwave Entrainment</label>
+                            <p class="energy-hint">Choose one method and one frequency. This replaces the basic binaural toggle above.</p>
+
+                            <div class="energy-method-row">
+                                <label class="energy-method-option">
+                                    <input type="radio" name="entrainmentMethod" value="binaural" checked>
+                                    <span class="energy-method-label">Binaural Beats</span>
+                                    <span class="energy-method-desc">Stereo, requires headphones</span>
+                                </label>
+                                <label class="energy-method-option">
+                                    <input type="radio" name="entrainmentMethod" value="isochronic">
+                                    <span class="energy-method-label">Isochronic Tones</span>
+                                    <span class="energy-method-desc">Mono-compatible, no headphones needed</span>
+                                </label>
+                                <label class="energy-method-option">
+                                    <input type="radio" name="entrainmentMethod" value="none">
+                                    <span class="energy-method-label">None</span>
+                                    <span class="energy-method-desc">No brainwave entrainment</span>
+                                </label>
+                            </div>
+
+                            <label class="setting-label" style="margin-top:10px;">Frequency Preset</label>
+                            <select id="entrainmentPreset" class="modern-select">
+                                <option value="delta">Delta (2 Hz) — Deep sleep, healing</option>
+                                <option value="theta" selected>Theta (6 Hz) — Meditation, creativity</option>
+                                <option value="alpha">Alpha (10 Hz) — Relaxation, calm focus</option>
+                                <option value="beta">Beta (20 Hz) — Alertness, concentration</option>
+                                <option value="gamma">Gamma (40 Hz) — Peak awareness, insight</option>
+                            </select>
+
+                            <!-- Frequency Sweep Mode -->
+                            <label class="modern-checkbox standalone" style="margin-top:10px;">
+                                <input type="checkbox" id="sweepToggle">
+                                <span class="checkmark"></span>
+                                <span class="check-label">Enable Frequency Sweep</span>
+                            </label>
+                            <div class="sweep-controls" id="sweepControls" style="display:none;">
+                                <p class="energy-hint" style="margin-top:4px;">Sweeps the brainwave frequency smoothly from start to end over the full audio duration. Great for guided meditation transitions (e.g., Beta → Theta to ease into deep relaxation).</p>
+                                <div class="sweep-row">
+                                    <div class="sweep-field">
+                                        <label class="sweep-label">Start Hz</label>
+                                        <input type="number" id="sweepStartHz" class="sweep-input" value="20" min="0.5" max="100" step="0.5">
+                                    </div>
+                                    <div class="sweep-arrow">→</div>
+                                    <div class="sweep-field">
+                                        <label class="sweep-label">End Hz</label>
+                                        <input type="number" id="sweepEndHz" class="sweep-input" value="6" min="0.5" max="100" step="0.5">
+                                    </div>
+                                </div>
+                                <div class="sweep-info" id="sweepInfo">
+                                    <span class="sweep-info-text">Sweep time will be calculated when the audio duration is known.</span>
+                                </div>
+                                <div class="sweep-presets">
+                                    <button class="preset-btn sweep-preset-btn" data-start="20" data-end="6">Beta→Theta (20→6 Hz)</button>
+                                    <button class="preset-btn sweep-preset-btn" data-start="10" data-end="2">Alpha→Delta (10→2 Hz)</button>
+                                    <button class="preset-btn sweep-preset-btn" data-start="6" data-end="2">Theta→Delta (6→2 Hz)</button>
+                                    <button class="preset-btn sweep-preset-btn" data-start="40" data-end="10">Gamma→Alpha (40→10 Hz)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Solfeggio Frequencies -->
+                        <div class="energy-section">
+                            <label class="setting-label">Solfeggio Frequencies</label>
+                            <p class="energy-hint">Sacred tonal frequencies that create a subtle harmonic bed. Select one or more.</p>
+                            <div class="solfeggio-grid" id="solfeggioGrid">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Schumann Resonance -->
+                        <div class="energy-section">
+                            <label class="modern-checkbox standalone">
+                                <input type="checkbox" id="schumannToggle">
+                                <span class="checkmark"></span>
+                                <span class="check-label">Schumann Resonance (7.83 Hz Earth Frequency)</span>
+                            </label>
+                            <p class="energy-hint" style="margin-top:4px;">A subtle grounding layer at the Earth's electromagnetic resonant frequency. Best with quality headphones/subwoofer.</p>
+                        </div>
+
+                        <!-- Energy Amplitude -->
+                        <div class="energy-section">
+                            <div class="slider-header">
+                                <label class="setting-label">Energy Layer Volume</label>
+                                <span class="slider-value" id="energyAmpValue">15%</span>
+                            </div>
+                            <input type="range" id="energyAmpSlider" class="modern-slider" min="5" max="30" step="1" value="15">
+                            <div class="slider-ticks">
+                                <span>5% subtle</span>
+                                <span>15% default</span>
+                                <span>30% strong</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Mask / Duration -->
+                <section class="card glass-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                            Masking &amp; Duration
+                        </h2>
+                    </div>
+
+                    <div class="mask-section">
+                        <label class="modern-checkbox standalone">
+                            <input type="checkbox" id="useCustomMask">
+                            <span class="checkmark"></span>
+                            <span class="check-label">Use custom masking music</span>
+                        </label>
+
+                        <div class="mask-upload-area" id="maskUploadArea">
+                            <div class="upload-zone" id="uploadZone">
+                                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <p class="upload-text">Drag &amp; drop audio file here</p>
+                                <p class="upload-hint">or click to browse (WAV, MP3, FLAC, OGG)</p>
+                                <input type="file" id="maskFileInput" accept="audio/*" hidden>
+                            </div>
+                            <div class="mask-info" id="maskInfo" style="display:none;">
+                                <div class="mask-file-info">
+                                    <span class="mask-filename" id="maskFilename"></span>
+                                    <span class="mask-duration" id="maskDuration"></span>
+                                </div>
+                                <button class="btn btn-sm btn-ghost" id="removeMaskBtn">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="duration-section" id="durationSection">
+                        <label class="setting-label">Target Duration (seconds)</label>
+                        <div class="duration-input-row">
+                            <input type="number" id="durationInput" class="modern-input" min="10" max="7200" value="300" step="1">
+                            <span class="duration-label">seconds</span>
+                        </div>
+                        <div class="duration-presets">
+                            <button class="preset-btn" data-duration="60">1 min</button>
+                            <button class="preset-btn" data-duration="180">3 min</button>
+                            <button class="preset-btn" data-duration="300" data-active="true">5 min</button>
+                            <button class="preset-btn" data-duration="600">10 min</button>
+                            <button class="preset-btn" data-duration="1800">30 min</button>
+                            <button class="preset-btn" data-duration="3600">60 min</button>
+                        </div>
+                        <p class="duration-hint" id="durationHint">Affirmations will loop to fill the duration. Longest vocal track determines base length.</p>
+                    </div>
+                </section>
+
+                <!-- Generate & Preview -->
+                <section class="card glass-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                            Generate &amp; Preview
+                        </h2>
+                        <p class="card-desc">Generate speech tracks, preview the result, then export the final audio.</p>
+                    </div>
+
+                    <button id="generateTTSBtn" class="btn btn-primary btn-full">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Step 1: Generate Speech Tracks
+                    </button>
+
+                    <!-- Status after TTS + Stale preview warning -->
+                    <div class="tts-status" id="ttsStatus" style="display:none;">
+                        <span class="tts-status-text" id="ttsStatusText">Speech tracks ready</span>
+                    </div>
+
+                    <!-- Preview Player (custom) -->
+                    <div class="preview-section" id="previewSection" style="display:none;">
+                        <div class="preview-player" id="previewPlayer">
+                            <button id="previewPlayBtn" class="player-play-btn" title="Play / Pause">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </button>
+                            <div class="player-track">
+                                <input type="range" id="previewSeekBar" class="player-seek" min="0" max="100" value="0" step="0.1">
+                                <div class="player-times">
+                                    <span id="previewCurrentTime">0:00</span>
+                                    <span id="previewTotalTime">0:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-info-row">
+                            <span class="preview-label" id="previewLabel">No preview yet</span>
+                            <span class="preview-eta" id="previewEta" style="display:none;"></span>
+                        </div>
+                        <audio id="previewAudio" style="display:none;" preload="auto"></audio>
+                    </div>
+
+                    <!-- Export -->
+                    <div class="export-row" style="margin-top:12px;">
+                        <input type="text" id="filenameInput" class="modern-input" value="my_subliminal" placeholder="Output filename" style="flex:1;">
+                        <span class="ext-label">.wav</span>
+                    </div>
+                    <button id="exportBtn" class="btn btn-accent btn-full" disabled>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Step 3: Export Full Audio
+                    </button>
+                    <div class="export-eta" id="exportEta" style="display:none;"></div>
+
+                    <!-- Progress Bar (inside card, visible during generation) -->
+                    <div class="progress-container" id="progressContainer" style="display:none;">
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <div class="progress-shimmer"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span class="progress-text" id="progressText">Processing...</span>
+                            <span class="progress-pct" id="progressPct">0%</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+    </div>
+
+    <!-- ===== PREVIEW CHOICE MODAL ===== -->
+    <div class="modal-overlay" id="previewChoiceModal" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Choose Preview Type</h3>
+                <button class="modal-close" id="modalCloseBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">How would you like to preview your subliminal audio?</p>
+                <div class="modal-choices">
+                    <button class="modal-choice-btn" id="preview10sBtn">
+                        <span class="choice-icon">⏱</span>
+                        <span class="choice-title">10 Second Sample</span>
+                        <span class="choice-desc">Quick preview — generates full audio then clips the first 10 seconds</span>
+                    </button>
+                    <button class="modal-choice-btn" id="previewFullBtn">
+                        <span class="choice-icon">🔊</span>
+                        <span class="choice-title">Full Audio Preview</span>
+                        <span class="choice-desc">Generate the complete subliminal to hear the final result</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== App Scripts ===== -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
