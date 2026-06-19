@@ -4,6 +4,7 @@ ffmpeg.exe
 # --- PyInstaller build artifacts ---
 build/
 dist/
+build_output.log
 
 # --- Generated output ---
 output/
@@ -24,3 +25,6 @@ env/
 .idea/
 *.swp
 *.swo
+
+# --- Windows reserved-name artifact (from stray '2>nul' redirects) ---
+nul

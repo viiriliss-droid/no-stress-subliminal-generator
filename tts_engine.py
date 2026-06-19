@@ -123,46 +123,14 @@ DEFAULT_VOICE = "en-US-AriaNeural"
 TARGET_SAMPLE_RATE = 48000
 
 
-def _find_ffmpeg() -> str:
-    """
-    Locate the ffmpeg executable.
-
-    Checks in order:
-    1. Project directory (bundled with the .exe via PyInstaller)
-    2. System PATH
-
-    Returns:
-        Path to ffmpeg executable.
-
-    Raises:
-        RuntimeError: If ffmpeg cannot be found.
-    """
-    # Check project directory first (for PyInstaller bundle)
-    project_dir = os.path.dirname(os.path.abspath(__file__))
-    local_ffmpeg = os.path.join(project_dir, "ffmpeg.exe")
-    if os.path.isfile(local_ffmpeg):
-        return local_ffmpeg
-
-    # Check sys._MEIPASS for PyInstaller onefile mode
-    if hasattr(sys, '_MEIPASS'):
-        bundled = os.path.join(sys._MEIPASS, "ffmpeg.exe")
-        if os.path.isfile(bundled):
-            return bundled
-
-    # Fall back to system PATH
-    system_ffmpeg = shutil.which("ffmpeg")
-    if system_ffmpeg:
-        return system_ffmpeg
-
-    raise RuntimeError(
-        "ffmpeg not found. Please ensure ffmpeg.exe is in the application directory "
-        "or installed on your system. Download from: https://ffmpeg.org/download.html"
-    )
-
-
 def _mp3_to_wav(mp3_path: str, wav_path: str) -> str:
     """
-    Convert MP3 to 48kHz 24-bit mono WAV using ffmpeg subprocess.
+    Convert MP3 to 48kHz 24-bit mono WAV using pure-Python audio libs.
+
+    Uses soundfile (libsndfile >= 1.1.0 decodes MP3 natively) for decode
+    and write, and librosa for resampling. This avoids any dependency on
+    an external ffmpeg.exe being present on the machine or bundled with
+    the PyInstaller build, so the app works when shipped as a bare .exe.
 
     Args:
         mp3_path: Path to the input MP3 file.
@@ -172,40 +140,39 @@ def _mp3_to_wav(mp3_path: str, wav_path: str) -> str:
         The wav_path on success.
 
     Raises:
-        RuntimeError: If ffmpeg conversion fails.
+        RuntimeError: If decode/resample/write fails or output is empty.
     """
-    ffmpeg = _find_ffmpeg()
-
-    cmd = [
-        ffmpeg,
-        "-i", mp3_path,
-        "-acodec", "pcm_s24le",   # 24-bit PCM
-        "-ar", str(TARGET_SAMPLE_RATE),  # 48 kHz
-        "-ac", "1",               # mono
-        "-y",                     # overwrite output
-        wav_path,
-    ]
-
-    result = subprocess.run(
-        cmd,
-        capture_output=True,
-        timeout=60,
-    )
-
-    if result.returncode != 0 or not os.path.isfile(wav_path):
-        stderr_msg = result.stderr.decode('utf-8', errors='replace')[:500] if result.stderr else ""
-        raise RuntimeError(
-            f"ffmpeg conversion failed (exit code {result.returncode}):\n"
-            f"{stderr_msg}"
-        )
-
-    # Verify the output is valid WAV
     try:
-        data, sr = sf.read(wav_path)
+        # librosa is heavy to import; load it lazily so module import stays fast.
+        import librosa
+
+        # Decode the MP3 via libsndfile (native MP3 support in >= 1.1.0).
+        data, sr = sf.read(mp3_path, dtype='float32', always_2d=False)
+
+        # Flatten to mono (Edge TTS is already mono, but be defensive).
+        if data.ndim > 1:
+            data = data.mean(axis=1)
+
         if len(data) == 0:
-            raise RuntimeError("ffmpeg produced an empty WAV file")
+            raise RuntimeError("MP3 decoded to an empty audio buffer")
+
+        # Resample to the target sample rate if needed.
+        if sr != TARGET_SAMPLE_RATE:
+            data = librosa.resample(data, orig_sr=sr, target_sr=TARGET_SAMPLE_RATE)
+
+        # Write 48kHz / 24-bit / mono WAV. Float32 in [-1, 1] maps cleanly.
+        sf.write(wav_path, data, TARGET_SAMPLE_RATE, subtype='PCM_24')
+
+    except (RuntimeError, sf.LibsndfileError, OSError, ValueError) as e:
+        raise RuntimeError(f"MP3→WAV conversion failed: {e}") from e
+
+    # Verify the output is a valid, non-empty WAV.
+    try:
+        verify, _ = sf.read(wav_path)
+        if len(verify) == 0:
+            raise RuntimeError("produced an empty WAV file")
     except (RuntimeError, sf.LibsndfileError, OSError) as e:
-        raise RuntimeError(f"ffmpeg output validation failed: {e}")
+        raise RuntimeError(f"WAV output validation failed: {e}")
 
     return wav_path
 

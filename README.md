@@ -47,15 +47,17 @@ cd subliminal-generator
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Get ffmpeg
-# Download ffmpeg.exe (Windows) or install via package manager (Mac/Linux)
-# Place ffmpeg.exe in the project folder
-
-# 4. Run
+# 3. Run
 python main.py              # Desktop mode (Windows, requires pywebview)
 python main.py --browser    # Opens in your browser
 python main.py --server     # Headless server mode
 ```
+
+> **Note:** ffmpeg is **not** required. MP3→WAV conversion for the TTS path is
+> handled in pure Python via `soundfile` (libsndfile ≥ 1.1.0 decodes MP3 natively)
+> and `librosa`. The optional "custom masking music" preview-clip path can still
+> use ffmpeg if it's installed on your PATH, but degrades gracefully (copies the
+> full file) when it isn't.
 
 ## How to Use
 
@@ -85,8 +87,7 @@ python main.py --server     # Headless server mode
 ├── Subliminal_Audio_Generator.spec  # PyInstaller build spec
 ├── HANDOVER.md          # Detailed handover document for developers
 ├── templates/           # HTML UI
-├── static/              # CSS & JavaScript
-└── ffmpeg.exe           # Portable ffmpeg (NOT included in repo — download separately)
+└── static/              # CSS & JavaScript
 ```
 
 ## Building the .exe
@@ -95,7 +96,7 @@ python main.py --server     # Headless server mode
 # Install PyInstaller
 pip install pyinstaller>=6.0
 
-# Build (ffmpeg.exe must be in the project directory)
+# Build
 python -m PyInstaller Subliminal_Audio_Generator.spec --noconfirm
 
 # Output: dist/Subliminal_Audio_Generator.exe (~180 MB)

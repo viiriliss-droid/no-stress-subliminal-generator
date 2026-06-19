@@ -8,6 +8,5 @@ flask>=3.0.0
 flask-cors>=4.0.0
 pywebview>=5.0.0
 
-# NOTE: ffmpeg.exe is required for MP3→WAV conversion.
-# It is bundled with the .exe or must be installed on the system.
-# Download: https://ffmpeg.org/download.html
+# NOTE: ffmpeg is NOT required for TTS. MP3→WAV conversion is handled in pure
+# Python via soundfile (libsndfile >= 1.1.0 decodes MP3 natively) + librosa.
